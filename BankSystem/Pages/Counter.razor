@@ -1,9 +1,8 @@
 ﻿@attribute [Authorize]
 @page "/counter"
-@inject IStringLocalizer<Resource> localizer
     <AuthorizeView Context="authContext">
         <Authorized>
-            <h1>@localizer["Test"] @localizer["Hello"] @localizer["world"]</h1>
+            <h1></h1>
             <h1>Counter</h1>
 
             <p>Current count: @currentCount</p>

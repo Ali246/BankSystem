@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BankSystem.Shared.ResourceFiles {
+namespace BankSystem.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace BankSystem.Shared.ResourceFiles {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resource {
+    public class App {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resource() {
+        internal App() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace BankSystem.Shared.ResourceFiles {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BankSystem.Shared.ResourceFiles.Resource", typeof(Resource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BankSystem.Resources.App", typeof(App).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,11 @@ namespace BankSystem.Shared.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to مرحبا.
+        ///   Looks up a localized string similar to مرحبا بالعالم.
         /// </summary>
-        public static string Hello {
+        public static string HelloWorld {
             get {
-                return ResourceManager.GetString("Hello", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to test.
-        /// </summary>
-        public static string Test {
-            get {
-                return ResourceManager.GetString("Test", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to بالعالم.
-        /// </summary>
-        public static string world {
-            get {
-                return ResourceManager.GetString("world", resourceCulture);
+                return ResourceManager.GetString("HelloWorld", resourceCulture);
             }
         }
     }
