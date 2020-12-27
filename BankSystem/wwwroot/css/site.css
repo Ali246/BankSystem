@@ -181,3 +181,19 @@ app {
         display: block;
     }
 }
+.titleicon span {
+    font-size: 30px;
+    margin: 0 10px;
+}
+
+.titleicon h1 {
+    display: inline;
+}
+
+.titleicon {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    background: #fff;
+    box-shadow: 1px 1px 1px 1px #ececec;
+}

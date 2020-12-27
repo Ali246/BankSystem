@@ -1,0 +1,70 @@
+﻿@attribute [Authorize]
+@page "/Bank/EditBank/{BankId}"
+@using BankSystem.Data
+@inject BankSystem.IService.IBankService _bankService
+@inject NotificationService notificationService
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<App> Localizer
+<div class="titleicon">
+    <span class="oi oi-list" aria-hidden="true"></span><h1>@Localizer["EditBank"]</h1>
+   
+</div>
+<hr />
+<RadzenCard>
+    <AuthorizeView Context="authContext">
+        <Authorized>
+            <EditForm Model="@updateBank" OnValidSubmit="UpdateBank" Context="formContext">
+                <DataAnnotationsValidator />
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="BankName" class="control-label">@Localizer["BankName"]</label>
+                        <InputText for="BankName" class="form-control" @bind-Value="@updateBank.BankName"></InputText>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="MainBranch" class="control-label">@Localizer["MainBranch"]</label>
+                        <InputText for="MainBranch" class="form-control" @bind-Value="@updateBank.MainBranch"></InputText>
+
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                        <button class="btn btn-primary" type="button" @onclick="() => cancel()">@Localizer["Cancel"]</button>
+                    </div>
+
+                </div>
+            </EditForm>
+        </Authorized>
+    </AuthorizeView>
+</RadzenCard>
+
+
+@code {
+
+    [Parameter]
+    public string BankId { get; set; }
+    Bank updateBank = new Bank();
+    List<Bank> allBanksList = new List<Bank>();
+    protected override async Task OnInitializedAsync()
+    {
+        updateBank = _bankService.GeBankById(Convert.ToInt32(BankId));
+    }
+    protected void UpdateBank()
+    {
+        _bankService.UpdateBank(updateBank);
+        NavigationManager.NavigateTo("Bank/Banks/", true);
+    }
+
+    void cancel()
+    {
+
+        NavigationManager.NavigateTo("Bank/Banks/", true);
+    }
+
+    void Change(object value)
+    {
+        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+        // StateHasChanged();
+    }
+
+}

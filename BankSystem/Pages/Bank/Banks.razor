@@ -1,0 +1,108 @@
+﻿@page "/Bank/Banks"
+@inject IStringLocalizer<App> Localizer
+@using BankSystem.Data
+@inject IJSRuntime JSRuntime
+@inject BankSystem.IService.IBankService  _bankService
+@inject NavigationManager NavigationManager
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject NotificationService notificationService
+<div class="titleicon">
+    <span class="oi oi-list" aria-hidden="true"></span>
+    <h1>@Localizer["Banks"]</h1>
+</div>
+<AuthorizeView Context="AuthorizeContext">
+    <Authorized>
+
+        <br />
+        <RadzenButton Icon="add_circle_outline" style="margin-bottom:10px; margin-left:1350px;" Text="@Localizer["CreateBank"]" Click="@InsrtRow" />
+        <RadzenCard>
+            @if (BanksList == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <RadzenGrid @ref="BanksGrid" AllowFiltering="true"
+                            AllowPaging="true" PageSize="10"
+                            AllowSorting="true" EditMode="DataGridEditMode.Multiple"
+                            Data="@BanksList" TItem="Bank">
+                    <Columns>
+
+                        <RadzenGridColumn TItem="Bank" Property="BankName" Title="@Localizer["BankName"]" />
+                        <RadzenGridColumn TItem="Bank" Property="MainBranch" Title="@Localizer["MainBranch"]" />
+                        <RadzenGridColumn TItem="Bank" Property="al:web:url" Title="@Localizer["Edit"]" Filterable="false">
+                            <Template Context="Bank">
+                              <RadzenButton Width="150px" Text="@Localizer["Edit"]" Icon="edit" Click="@(args => Edit(Bank))" id="bnt-style-general" />
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn Width="150px" TItem="Bank" Property="al:web:url" Title="@Localizer["Delete"]" Filterable="false">
+                            <Template Context="Bank">
+                                <RadzenButton Text="@Localizer["Delete"]" Icon="delete" Click="@(args => Delete(Bank))" id="bnt-style-general" />
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+
+            }
+        </RadzenCard>
+
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    RadzenGrid<Bank> BanksGrid;
+    List<Bank> BanksList = new List<Bank>();
+    Bank newPoints = new Bank();
+    bool warning;
+    protected override async Task OnInitializedAsync()
+    {
+
+        BanksList = await Task.Run(() => _bankService.GetBanks());
+    }
+
+    //void EditRow(Points EditPoints)
+    //{
+    //    PointsGrid.EditRow(EditPoints);
+    //}
+
+    protected void Edit(Bank UpdateBank)
+    {
+
+        NavigationManager.NavigateTo("Bank/EditBank/" + UpdateBank.Id);
+    }
+
+    async Task Delete(Bank DeleteBank)
+    {
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "هل تريد مسح البنك");
+        if (confirmed)
+        {
+
+            DeleteBank.DeleteDate = DateTime.Now;
+            DeleteBank.IsDeleted = true;
+            var success = _bankService.DeleteBank(DeleteBank);
+            if (await success)
+            {
+                BanksList.Remove(DeleteBank);
+                BanksGrid.Reload();
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success", Duration = 4000 });
+            }
+            else
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Duration = 4000 });
+            }
+        }
+    }
+    protected void InsrtRow()
+    {
+        NavigationManager.NavigateTo("Bank/AddBank/");
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
+
+    }
+
+
+}

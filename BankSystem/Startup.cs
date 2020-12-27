@@ -15,6 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BankSystem.Areas.Identity;
 using BankSystem.Data;
+using BankSystem.IService;
+using BankSystem.Service;
+using Radzen;
 
 namespace BankSystem
 {
@@ -42,9 +45,11 @@ namespace BankSystem
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddScoped<NotificationService>();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
-        
+            services.AddTransient<IBankService, BankService>();
+
         }
         private RequestLocalizationOptions GetLocalizationOptions()
         {

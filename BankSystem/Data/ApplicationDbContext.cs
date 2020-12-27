@@ -12,5 +12,6 @@ namespace BankSystem.Data
             : base(options)
         {
         }
+        public DbSet<Bank> bank { get; set; }
     }
 }

@@ -1,14 +1,1 @@
-﻿@attribute [Authorize]
-@page "/"
-@inject IStringLocalizer<App> Localizer
-<AuthorizeView Context="authContext">
-    <Authorized>
-        <RadzenCard>
-            <h1>@Localizer["HelloWorld"]</h1>
-
-            Welcome to your new app.
-
-            <SurveyPrompt Title="How is Blazor working for you?" />
-        </RadzenCard>
-    </Authorized>
-</AuthorizeView>
+﻿

@@ -117,11 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BankName" xml:space="preserve">
+    <value>Bank Name</value>
+  </data>
+  <data name="Banks" xml:space="preserve">
+    <value>Banks</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="ConfirmationMessage" xml:space="preserve">
+    <value>Confirmation Message</value>
+  </data>
+  <data name="CreateBank" xml:space="preserve">
+    <value>Create Bank</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteBankConfirm" xml:space="preserve">
+    <value>Are you sure want to delete bank</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EditBank" xml:space="preserve">
+    <value>Edit Bank</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="HelloWorld" xml:space="preserve">
     <value> Hello World</value>
   </data>
-  <data name="Test" xml:space="preserve">
-    <value>test</value>
+  <data name="MainBranch" xml:space="preserve">
+    <value>Main Branch</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Operation Success</value>
   </data>
   <data name="world" xml:space="preserve">
     <value>بالعالم</value>
