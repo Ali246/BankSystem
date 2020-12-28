@@ -1,0 +1,87 @@
+﻿@attribute [Authorize]
+@page "/BankAccount/BankAccounts"
+@inject IStringLocalizer<App> Localizer
+@using BankSystem.Data
+@inject BankSystem.IService.IBankAccountService  BankAccountService
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+<div class="titleicon">
+    <span class="oi oi-person" aria-hidden="true"></span>
+    <h1>@Localizer["BanksAccount"]</h1>
+</div>
+<AuthorizeView Context="AuthorizeContext">
+    <Authorized>
+        <br />
+        <RadzenButton Icon="add_circle_outline" style="margin-bottom:10px; margin-left:1350px;" Text="اضافة" Click="@InsrtRow" />
+        <RadzenCard>
+            @if (BankAccountList == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <RadzenGrid @ref="BankAccountGrid" AllowFiltering="true"
+                            AllowPaging="true" PageSize="10"
+                            AllowSorting="true" EditMode="DataGridEditMode.Multiple"
+                            Data="@BankAccountList" TItem="BankAccount">
+                    <Columns>
+                        <RadzenGridColumn TItem="BankAccount" Property="CaptainOrOrganizName" Title="الاسم" />
+                        <RadzenGridColumn TItem="BankAccount" Property="Mobile" Title="الموبايل" />
+                        <RadzenGridColumn TItem="BankAccount" Property="CityName" Title="المحافظة" />
+                        @*<RadzenGridColumn TItem="BankAccount" Property="al:web:url" Title="تعديل" Filterable="false">
+                            <Template Context="BankAccount">
+                                <RadzenButton Text="تعديل" Icon="edit" Click="@(args => Edit(BankAccount))" id="bnt-style-general" />
+                            </Template>
+                        </RadzenGridColumn>*@
+                        @*<RadzenGridColumn TItem="BankAccount" Property="al:web:url" Title="مسح" Filterable="false">
+                            <Template Context="CaptainOrOrganization">
+                                <RadzenButton Text="مسح" Icon="delete" Click="@(args => Delete(CaptainOrOrganization))" id="bnt-style-general" />
+                            </Template>
+                        </RadzenGridColumn>*@
+                    </Columns>
+                </RadzenGrid>
+
+            }
+        </RadzenCard>
+
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    RadzenGrid<BankAccount> BankAccountGrid;
+    [Parameter]
+    public string viewType { get; set; }
+    List<BankAccount> BankAccountList = new List<BankAccount>();
+    BankAccount NewBankAccount = new BankAccount();
+    protected override async Task OnInitializedAsync()
+    {
+        BankAccountList = await Task.Run(() => BankAccountService.GetBankAccount());
+    }
+    //void EditRow(BankAccount EditCaptainOrOrganization)
+    //{
+    //    BankAccountGrid.EditRow(EditCaptainOrOrganization);
+    //}
+    //protected void Edit(BankAccount UpdateCaptainOrOrganization)
+    //{
+
+    //    NavigationManager.NavigateTo("AllCaptain/Edit/" + UpdateCaptainOrOrganization.Id);
+    //}
+    //async Task Delete(BankAccount DeleteCaptainOrOrganization)
+    //{
+    //    bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "هل تريد مسح الكباتن/الهيئات ؟ ");
+    //    if (confirmed)
+    //    {
+    //        DeleteCaptainOrOrganization.DeleteDate = DateTime.Now;
+    //        ParticipantSevice.UpdateCaptainOrOrg(DeleteCaptainOrOrganization);
+    //        CaptainOrOrganizationList.Remove(DeleteCaptainOrOrganization);
+    //        CaptainOrOrganizationGrid.Reload();
+    //    }
+    //}
+    protected void InsrtRow()
+    {
+
+        NavigationManager.NavigateTo("AllCaptain/Add/");
+    }
+
+}

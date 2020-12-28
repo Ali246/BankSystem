@@ -13,5 +13,6 @@ namespace BankSystem.Data
         {
         }
         public DbSet<Bank> bank { get; set; }
+        public DbSet<BankAccount> bankaccount { get; set; }
     }
 }

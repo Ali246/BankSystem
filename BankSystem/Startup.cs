@@ -49,6 +49,7 @@ namespace BankSystem
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<IBankService, BankService>();
+            services.AddTransient<IBankAccountService, BankAccountService>();
 
         }
         private RequestLocalizationOptions GetLocalizationOptions()
