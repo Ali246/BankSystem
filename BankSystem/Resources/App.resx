@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountNumber" xml:space="preserve">
+    <value>رقم حساب</value>
+  </data>
   <data name="Arabic" xml:space="preserve">
     <value>عربي</value>
   </data>
@@ -125,6 +128,9 @@
   </data>
   <data name="Banks" xml:space="preserve">
     <value>البنوك</value>
+  </data>
+  <data name="BanksAccount" xml:space="preserve">
+    <value>حسابات البنوك</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>الغاء</value>
@@ -137,6 +143,9 @@
   </data>
   <data name="CreateBank" xml:space="preserve">
     <value>انشاء بنك</value>
+  </data>
+  <data name="CreateBankAccount" xml:space="preserve">
+    <value>إنشاء حسابات بنكية</value>
   </data>
   <data name="CreateCurrency" xml:space="preserve">
     <value>انشاء عملة</value>
@@ -158,6 +167,9 @@
   </data>
   <data name="EditBank" xml:space="preserve">
     <value>تعديل البنك</value>
+  </data>
+  <data name="EditBanksAccounts" xml:space="preserve">
+    <value>تعديل  حسابات البنوك</value>
   </data>
   <data name="EditCurrency" xml:space="preserve">
     <value>تعديل عملة</value>

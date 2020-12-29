@@ -25,22 +25,21 @@
                             AllowSorting="true" EditMode="DataGridEditMode.Multiple"
                             Data="@BankAccountList" TItem="BankAccount">
                     <Columns>
-                        <RadzenGridColumn TItem="BankAccount" Property="CaptainOrOrganizName" Title="الاسم" />
-                        <RadzenGridColumn TItem="BankAccount" Property="Mobile" Title="الموبايل" />
-                        <RadzenGridColumn TItem="BankAccount" Property="CityName" Title="المحافظة" />
-                        @*<RadzenGridColumn TItem="BankAccount" Property="al:web:url" Title="تعديل" Filterable="false">
+                        <RadzenGridColumn TItem="BankAccount" Property="bank.BankName" Title="@Localizer["Banks"]" />
+                        <RadzenGridColumn TItem="BankAccount" Property="AccountNumber" Title="@Localizer["AccountNumber"]" />
+                        <RadzenGridColumn TItem="BankAccount" Property="currency.CurrencyCode" Title="@Localizer["Currencies"]" />
+                        <RadzenGridColumn TItem="BankAccount" Property="al:web:url" Title="@Localizer["Edit"]" Filterable="false">
                             <Template Context="BankAccount">
-                                <RadzenButton Text="تعديل" Icon="edit" Click="@(args => Edit(BankAccount))" id="bnt-style-general" />
+                                <RadzenButton Text="@Localizer["Edit"]" Icon="edit" Click="@(args => Edit(BankAccount))" id="bnt-style-general" />
                             </Template>
-                        </RadzenGridColumn>*@
-                        @*<RadzenGridColumn TItem="BankAccount" Property="al:web:url" Title="مسح" Filterable="false">
-                            <Template Context="CaptainOrOrganization">
-                                <RadzenButton Text="مسح" Icon="delete" Click="@(args => Delete(CaptainOrOrganization))" id="bnt-style-general" />
-                            </Template>
-                        </RadzenGridColumn>*@
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="BankAccount" Property="al:web:url" Title="@Localizer["Delete"]" Filterable="false">
+                        <Template Context="BankAccount">
+                         <RadzenButton Text="@Localizer["Delete"]" Icon="delete" Click="@(args => Delete(BankAccount))" id="bnt-style-general" />
+                        </Template>
+                        </RadzenGridColumn>
                     </Columns>
                 </RadzenGrid>
-
             }
         </RadzenCard>
 
@@ -50,38 +49,32 @@
 
 @code {
     RadzenGrid<BankAccount> BankAccountGrid;
-    [Parameter]
-    public string viewType { get; set; }
     List<BankAccount> BankAccountList = new List<BankAccount>();
     BankAccount NewBankAccount = new BankAccount();
     protected override async Task OnInitializedAsync()
     {
         BankAccountList = await Task.Run(() => BankAccountService.GetBankAccount());
     }
-    //void EditRow(BankAccount EditCaptainOrOrganization)
-    //{
-    //    BankAccountGrid.EditRow(EditCaptainOrOrganization);
-    //}
-    //protected void Edit(BankAccount UpdateCaptainOrOrganization)
-    //{
-
-    //    NavigationManager.NavigateTo("AllCaptain/Edit/" + UpdateCaptainOrOrganization.Id);
-    //}
-    //async Task Delete(BankAccount DeleteCaptainOrOrganization)
-    //{
-    //    bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "هل تريد مسح الكباتن/الهيئات ؟ ");
-    //    if (confirmed)
-    //    {
-    //        DeleteCaptainOrOrganization.DeleteDate = DateTime.Now;
-    //        ParticipantSevice.UpdateCaptainOrOrg(DeleteCaptainOrOrganization);
-    //        CaptainOrOrganizationList.Remove(DeleteCaptainOrOrganization);
-    //        CaptainOrOrganizationGrid.Reload();
-    //    }
-    //}
-    protected void InsrtRow()
+    protected void Edit(BankAccount UpdateBankAccount)
     {
 
-        NavigationManager.NavigateTo("AllCaptain/Add/");
+        NavigationManager.NavigateTo("BankAccount/EditBankAccount/" + UpdateBankAccount.Id);
+    }
+    async Task Delete(BankAccount DeleteBankAccount)
+    {
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "هل تريد مسح الحساب البنكي؟ ");
+        if (confirmed)
+        {
+            DeleteBankAccount.DeleteDate = DateTime.Now;
+            DeleteBankAccount.IsDeleted = true;
+            BankAccountService.UpdateBankAccount(DeleteBankAccount);
+            BankAccountList.Remove(DeleteBankAccount);
+            BankAccountGrid.Reload();
+        }
+    }
+    protected void InsrtRow()
+    {
+        NavigationManager.NavigateTo("BankAccount/AddBankAccount/");
     }
 
 }

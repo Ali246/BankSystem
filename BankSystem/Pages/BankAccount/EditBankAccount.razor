@@ -1,5 +1,96 @@
-﻿<h3>EditBankAccount</h3>
+﻿@attribute [Authorize]
+@page "/BankAccount/EditBankAccount/{BankAccountId}"
+@using BankSystem.Data
+@inject IStringLocalizer<App> Localizer
+@inject IJSRuntime JSRuntime
+@inject BankSystem.IService.IBankAccountService BankAccountService
+@inject BankSystem.IService.IBankService BankService
+@inject BankSystem.IService.ICurrencyService CurrencyService
+@inject NavigationManager NavigationManager
+<div class="titleicon">
+    <span class="oi oi-person" aria-hidden="true"></span>
+    <h1>@Localizer["EditBanksAccounts"]</h1>
+</div>
+<hr />
+<RadzenCard>
+    <AuthorizeView Context="authContext">
+        <Authorized>
+            <EditForm Model="@UpdateBankAccount" OnValidSubmit="UpdateCaptainOrOrg" Context="formContext">
+                <DataAnnotationsValidator />
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Type" class="control-label">@Localizer["Banks"]</label>
+                        <RadzenDropDown AllowClear="true"
+                                        TValue="int"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        FilterOperator="StringFilterOperator.Contains"
+                                        AllowFiltering="true"
+                                        Data="@AllBank"
+                                        TextProperty="BankName"
+                                        ValueProperty="Id"
+                                        Style="margin-bottom: 20px"
+                                        Change="@(args => Change(args))"
+                                        @bind-Value="@UpdateBankAccount.BankId"
+                                        class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Name" class="control-label">@Localizer["AccountNumber"]</label>
+                        <InputText for="Name" class="form-control" @bind-Value="@UpdateBankAccount.AccountNumber"></InputText>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Type" class="control-label">@Localizer["Currencies"]</label>
+                        <RadzenDropDown AllowClear="true"
+                                        TValue="int"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        FilterOperator="StringFilterOperator.Contains"
+                                        AllowFiltering="true"
+                                        Data="@AllCueencies"
+                                        TextProperty="CurrencyCode"
+                                        ValueProperty="Id"
+                                        Style="margin-bottom: 20px"
+                                        Change="@(args => Change(args))"
+                                        @bind-Value="@UpdateBankAccount.CurrencyId"
+                                        class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">@Localizer["Save"]</button>
+                        <button class="btn" type="button" @onclick="() => cancel()">@Localizer["Cancel"]</button>
+                    </div>
+                </div>
+            </EditForm>
+        </Authorized>
+    </AuthorizeView>
+</RadzenCard>
+
 
 @code {
+    [Parameter]
+    public string BankAccountId { get; set; }
+    BankAccount UpdateBankAccount = new BankAccount();
+    List<Bank> AllBank = new List<Bank>();
+    List<Currency> AllCueencies = new List<Currency>();
+    protected override async Task OnInitializedAsync()
+    {
+        AllBank = await Task.Run(() => BankService.GetBanks());
+        AllCueencies = await Task.Run(() => CurrencyService.GetCurrencies());
+        UpdateBankAccount = BankAccountService.GetBankAccountbyId(Convert.ToInt32(BankAccountId));
+    }
+    protected void UpdateCaptainOrOrg()
+    {
+        BankAccountService.UpdateBankAccount(UpdateBankAccount);
+        NavigationManager.NavigateTo("BankAccount/BankAccounts/", true);
+    }
+    void cancel()
+    {
 
+        NavigationManager.NavigateTo("BankAccount/BankAccounts/", true);
+    }
+
+    void Change(object value)
+    {
+        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+        // StateHasChanged();
+    }
 }

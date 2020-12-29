@@ -61,6 +61,15 @@ namespace BankSystem.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to رقم حساب.
+        /// </summary>
+        public static string AccountNumber {
+            get {
+                return ResourceManager.GetString("AccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to عربي.
         /// </summary>
         public static string Arabic {
@@ -84,6 +93,15 @@ namespace BankSystem.Resources {
         public static string Banks {
             get {
                 return ResourceManager.GetString("Banks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to حسابات البنوك.
+        /// </summary>
+        public static string BanksAccount {
+            get {
+                return ResourceManager.GetString("BanksAccount", resourceCulture);
             }
         }
         
@@ -120,6 +138,15 @@ namespace BankSystem.Resources {
         public static string CreateBank {
             get {
                 return ResourceManager.GetString("CreateBank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إنشاء حسابات بنكية.
+        /// </summary>
+        public static string CreateBankAccount {
+            get {
+                return ResourceManager.GetString("CreateBankAccount", resourceCulture);
             }
         }
         
@@ -183,6 +210,15 @@ namespace BankSystem.Resources {
         public static string EditBank {
             get {
                 return ResourceManager.GetString("EditBank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تعديل  حسابات البنوك.
+        /// </summary>
+        public static string EditBanksAccounts {
+            get {
+                return ResourceManager.GetString("EditBanksAccounts", resourceCulture);
             }
         }
         

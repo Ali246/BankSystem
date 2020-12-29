@@ -1,5 +1,92 @@
-﻿<h3>AddBankAccount</h3>
+﻿@attribute [Authorize]
+@page "/BankAccount/AddBankAccount/"
+@using BankSystem.Data
+@inject IStringLocalizer<App> Localizer
+@inject IJSRuntime JSRuntime
+@inject BankSystem.IService.IBankAccountService BankAccountService
+@inject BankSystem.IService.IBankService BankService
+@inject BankSystem.IService.ICurrencyService CurrencyService
+@inject NavigationManager NavigationManager
+<div class="titleicon">
+    <span class="oi oi-person" aria-hidden="true"></span>
+    <h1>@Localizer["CreateBankAccount"]</h1>
+</div>
+<hr />
+<RadzenCard>
+    <AuthorizeView Context="authContext">
+        <Authorized>
+            <EditForm Model="@NewBankAccount" OnValidSubmit="CreateBankAccount" Context="formContext">
+                <DataAnnotationsValidator />
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Type" class="control-label">@Localizer["Banks"]</label>
+                        <RadzenDropDown AllowClear="true"
+                                        TValue="int"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        FilterOperator="StringFilterOperator.Contains"
+                                        AllowFiltering="true"
+                                        Data="@AllBanks"
+                                        TextProperty="BankName"
+                                        ValueProperty="Id"
+                                        Style="margin-bottom: 20px"
+                                        Change="@(args => Change(args))"
+                                        @bind-Value="@NewBankAccount.BankId"
+                                        class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Name" class="control-label">@Localizer["AccountNumber"]</label>
+                        <InputText for="Name" class="form-control" @bind-Value="@NewBankAccount.AccountNumber"></InputText>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Type" class="control-label">@Localizer["Currencies"]</label>
+                        <RadzenDropDown AllowClear="true"
+                                        TValue="int"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        FilterOperator="StringFilterOperator.Contains"
+                                        AllowFiltering="true"
+                                        Data="@AllCueencies"
+                                        TextProperty="CurrencyCode"
+                                        ValueProperty="Id"
+                                        Style="margin-bottom: 20px"
+                                        Change="@(args => Change(args))"
+                                        @bind-Value="@NewBankAccount.CurrencyId"
+                                        class="form-control" />
+                    </div>                   
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">@Localizer["Save"]</button>
+                        <button class="btn" type="button" @onclick="() => cancel()">@Localizer["Cancel"]</button>
+                    </div>
+
+                </div>
+            </EditForm>
+        </Authorized>
+    </AuthorizeView>
+</RadzenCard>
+
 
 @code {
+    BankAccount NewBankAccount = new BankAccount();
+    List<Bank> AllBanks = new List<Bank>();
+    List<Currency> AllCueencies = new List<Currency>();
+    protected override async Task OnInitializedAsync()
+    {
+        AllBanks = await Task.Run(() => BankService.GetBanks());
+        AllCueencies = await Task.Run(() => CurrencyService.GetCurrencies());
+    }
+    protected void CreateBankAccount()
+    {
+        BankAccountService.AddBankAccount(NewBankAccount);
+        NavigationManager.NavigateTo("BankAccount/BankAccounts/", true);
+    }
+    void cancel()
+    {
+        NavigationManager.NavigateTo("BankAccount/BankAccounts/", true);
+    }
 
+    void Change(object value)
+    {
+        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+    }
 }

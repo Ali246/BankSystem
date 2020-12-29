@@ -19,18 +19,17 @@ namespace BankSystem.Service
         {
             if (_db != null)
             {
-                return await _db.bankaccount.Where(BA => BA.IsDeleted == false).ToListAsync();                
+                return await _db.bankaccount.Where(BA => BA.IsDeleted == false).Include(x => x.bank).Include(c=>c.currency).ToListAsync();
             }
-
             return null;
         }
         public async Task<int> AddBankAccount(BankAccount NewBankAccount)
         {
             if (_db != null)
-            {              
+            {
+                NewBankAccount.CreateDate = DateTime.Now;
                 await _db.bankaccount.AddAsync(NewBankAccount);
                 await _db.SaveChangesAsync();
-
                 return NewBankAccount.Id;
             }
             return 0;
