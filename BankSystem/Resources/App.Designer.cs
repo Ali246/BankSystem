@@ -196,6 +196,15 @@ namespace BankSystem.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الايميل.
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to انجليزي.
         /// </summary>
         public static string English {

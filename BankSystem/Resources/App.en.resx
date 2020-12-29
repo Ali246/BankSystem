@@ -162,6 +162,9 @@
   <data name="EditCurrency" xml:space="preserve">
     <value>Edit Currency</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
   <data name="English" xml:space="preserve">
     <value>English</value>
   </data>

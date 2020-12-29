@@ -162,6 +162,9 @@
   <data name="EditCurrency" xml:space="preserve">
     <value>تعديل عملة</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>الايميل</value>
+  </data>
   <data name="English" xml:space="preserve">
     <value>انجليزي</value>
   </data>
