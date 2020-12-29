@@ -1,65 +1,66 @@
 ﻿@attribute [Authorize]
-@page "/Currency/AddCurrency"
+@page "/Currency/EditCurrency/{CurrencyId}"
 @using BankSystem.Data
 @inject BankSystem.IService.ICurrencyService _currencyService
 @inject NotificationService notificationService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<App> Localizer
 <div class="titleicon">
-    @*<span class="oi oi-list" aria-hidden="true"></span>*@
-    <h1>@Localizer["CreateCurrency"]</h1>
+    <span class="oi oi-dollar" aria-hidden="true"></span><h1>@Localizer["EditCurrency"]</h1>
+
 </div>
 <hr />
 <RadzenCard>
     <AuthorizeView Context="authContext">
         <Authorized>
-            <EditForm Model="@newCurrency" OnValidSubmit="CreateCurrency" Context="formContext">
+            <EditForm Model="@updateCurrency" OnValidSubmit="UpdateCurrency" Context="formContext">
                 <DataAnnotationsValidator />
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="CurrencyCode" class="control-label">@Localizer["CurrencyCode"]</label>
-                        <InputText for="CurrencyCode" class="form-control" @bind-Value="@newCurrency.CurrencyCode"></InputText>
+                        <InputText for="CurrencyCode" class="form-control" @bind-Value="@updateCurrency.CurrencyCode"></InputText>
 
                     </div>
-              
+                 
+
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
                         <button class="btn btn-primary" type="button" @onclick="() => cancel()">@Localizer["Cancel"]</button>
                     </div>
+
                 </div>
             </EditForm>
         </Authorized>
     </AuthorizeView>
 </RadzenCard>
 
+
 @code {
 
-    Currency newCurrency = new Currency();
-
-    protected async Task CreateCurrency()
+    [Parameter]
+    public string CurrencyId { get; set; }
+    Currency updateCurrency = new Currency();
+    List<Currency> allCurrenciesList = new List<Currency>();
+    protected override async Task OnInitializedAsync()
     {
-        var Returned = _currencyService.AddCurrency(newCurrency);
-        if (await Returned)
-        {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success", Duration = 4000 });
-            NavigationManager.NavigateTo("Currency/Currencies/", true);
-        }
-        else
-        {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Duration = 4000 });
-        }
-
+        updateCurrency = _currencyService.GeCurrencyById(Convert.ToInt32(CurrencyId));
     }
+    protected void UpdateCurrency()
+    {
+        _currencyService.UpdateCurrency(updateCurrency);
+        NavigationManager.NavigateTo("Currency/Currencies/", true);
+    }
+
     void cancel()
     {
 
         NavigationManager.NavigateTo("Currency/Currencies/", true);
     }
 
-    void ShowNotification(NotificationMessage message)
+    void Change(object value)
     {
-        notificationService.Notify(message);
-
+        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+        // StateHasChanged();
     }
 
 }

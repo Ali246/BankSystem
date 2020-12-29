@@ -50,6 +50,7 @@ namespace BankSystem
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<IBankService, BankService>();
             services.AddTransient<IBankAccountService, BankAccountService>();
+            services.AddTransient<ICurrencyService, CurrencyService>();
 
         }
         private RequestLocalizationOptions GetLocalizationOptions()

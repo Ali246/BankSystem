@@ -1,0 +1,102 @@
+﻿@page "/Currency/Currencies"
+@inject IStringLocalizer<App> Localizer
+@using BankSystem.Data
+@inject IJSRuntime JSRuntime
+@inject BankSystem.IService.ICurrencyService  _currencyService
+@inject NavigationManager NavigationManager
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject NotificationService notificationService
+<div class="titleicon">
+    <span class="oi oi-dollar" aria-hidden="true"></span>
+    <h1>@Localizer["Currencies"]</h1>
+</div>
+<AuthorizeView Context="AuthorizeContext">
+    <Authorized>
+
+        <br />
+        <RadzenButton Icon="add_circle_outline" style="margin-bottom:10px; margin-left:1350px;" Text="@Localizer["CreateCurrency"]" Click="@InsrtRow" />
+        <RadzenCard>
+            @if (CurrenciesList == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <RadzenGrid @ref="CurrenciesGrid" AllowFiltering="true"
+                            AllowPaging="true" PageSize="10"
+                            AllowSorting="true" EditMode="DataGridEditMode.Multiple"
+                            Data="@CurrenciesList" TItem="Currency">
+                    <Columns>
+
+                        <RadzenGridColumn TItem="Currency" Property="CurrencyCode" Title="@Localizer["CurrencyCode"]" />
+                        <RadzenGridColumn TItem="Currency" Property="al:web:url" Title="@Localizer["Edit"]" Filterable="false">
+                            <Template Context="Currency">
+                                <RadzenButton Width="150px" Text="@Localizer["Edit"]" Icon="edit" Click="@(args => Edit(Currency))" id="bnt-style-general" />
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn Width="150px" TItem="Currency" Property="al:web:url" Title="@Localizer["Delete"]" Filterable="false">
+                            <Template Context="Currency">
+                                <RadzenButton Text="@Localizer["Delete"]" Icon="delete" Click="@(args => Delete(Currency))" id="bnt-style-general" />
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+
+            }
+        </RadzenCard>
+
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    RadzenGrid<Currency> CurrenciesGrid;
+    List<Currency> CurrenciesList = new List<Currency>();
+    Currency newCurrencies = new Currency();
+    bool warning;
+    protected override async Task OnInitializedAsync()
+    {
+
+        CurrenciesList = await Task.Run(() => _currencyService.GetCurrencies());
+    }
+
+    protected void Edit(Currency UpdateCurrency)
+    {
+
+        NavigationManager.NavigateTo("Currency/EditCurrency/" + UpdateCurrency.Id);
+    }
+
+    async Task Delete(Currency DeleteCurrency)
+    {
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "هل تريد مسح العملة");
+        if (confirmed)
+        {
+
+            DeleteCurrency.DeleteDate = DateTime.Now;
+            DeleteCurrency.IsDeleted = true;
+            var success = _currencyService.DeleteCurrency(DeleteCurrency);
+            if (await success)
+            {
+                CurrenciesList.Remove(DeleteCurrency);
+                CurrenciesGrid.Reload();
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success", Duration = 4000 });
+            }
+            else
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Duration = 4000 });
+            }
+        }
+    }
+    protected void InsrtRow()
+    {
+        NavigationManager.NavigateTo("Currency/AddCurrency/");
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
+
+    }
+
+
+}

@@ -61,6 +61,15 @@ namespace BankSystem.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عربي.
+        /// </summary>
+        public static string Arabic {
+            get {
+                return ResourceManager.GetString("Arabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اسم البنك.
         /// </summary>
         public static string BankName {
@@ -115,6 +124,33 @@ namespace BankSystem.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to انشاء عملة.
+        /// </summary>
+        public static string CreateCurrency {
+            get {
+                return ResourceManager.GetString("CreateCurrency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to العملات.
+        /// </summary>
+        public static string Currencies {
+            get {
+                return ResourceManager.GetString("Currencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to رمز العملة.
+        /// </summary>
+        public static string CurrencyCode {
+            get {
+                return ResourceManager.GetString("CurrencyCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مسح.
         /// </summary>
         public static string Delete {
@@ -151,11 +187,38 @@ namespace BankSystem.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تعديل عملة.
+        /// </summary>
+        public static string EditCurrency {
+            get {
+                return ResourceManager.GetString("EditCurrency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to انجليزي.
+        /// </summary>
+        public static string English {
+            get {
+                return ResourceManager.GetString("English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to حدث خطأ ما .
         /// </summary>
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مرحبا.
+        /// </summary>
+        public static string Hello {
+            get {
+                return ResourceManager.GetString("Hello", resourceCulture);
             }
         }
         
@@ -169,11 +232,47 @@ namespace BankSystem.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اللغة.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تسجيل الدخول.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تسجيل الخروج.
+        /// </summary>
+        public static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to فرع البنك.
         /// </summary>
         public static string MainBranch {
             get {
                 return ResourceManager.GetString("MainBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تسجيل.
+        /// </summary>
+        public static string Register {
+            get {
+                return ResourceManager.GetString("Register", resourceCulture);
             }
         }
         

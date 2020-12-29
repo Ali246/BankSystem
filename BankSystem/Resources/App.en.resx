@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Arabic" xml:space="preserve">
+    <value>Arabic</value>
+  </data>
   <data name="BankName" xml:space="preserve">
     <value>Bank Name</value>
   </data>
@@ -135,6 +138,15 @@
   <data name="CreateBank" xml:space="preserve">
     <value>Create Bank</value>
   </data>
+  <data name="CreateCurrency" xml:space="preserve">
+    <value>Create Currency</value>
+  </data>
+  <data name="Currencies" xml:space="preserve">
+    <value>Currencies</value>
+  </data>
+  <data name="CurrencyCode" xml:space="preserve">
+    <value>Currency Code</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -147,22 +159,40 @@
   <data name="EditBank" xml:space="preserve">
     <value>Edit Bank</value>
   </data>
+  <data name="EditCurrency" xml:space="preserve">
+    <value>Edit Currency</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Hello</value>
   </data>
   <data name="HelloWorld" xml:space="preserve">
     <value> Hello World</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Log out</value>
+  </data>
   <data name="MainBranch" xml:space="preserve">
     <value>Main Branch</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Operation Success</value>
-  </data>
-  <data name="world" xml:space="preserve">
-    <value>بالعالم</value>
   </data>
 </root>

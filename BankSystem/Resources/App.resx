@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Arabic" xml:space="preserve">
+    <value>عربي</value>
+  </data>
   <data name="BankName" xml:space="preserve">
     <value>اسم البنك</value>
   </data>
@@ -135,6 +138,15 @@
   <data name="CreateBank" xml:space="preserve">
     <value>انشاء بنك</value>
   </data>
+  <data name="CreateCurrency" xml:space="preserve">
+    <value>انشاء عملة</value>
+  </data>
+  <data name="Currencies" xml:space="preserve">
+    <value>العملات</value>
+  </data>
+  <data name="CurrencyCode" xml:space="preserve">
+    <value>رمز العملة</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>مسح</value>
   </data>
@@ -147,14 +159,35 @@
   <data name="EditBank" xml:space="preserve">
     <value>تعديل البنك</value>
   </data>
+  <data name="EditCurrency" xml:space="preserve">
+    <value>تعديل عملة</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>انجليزي</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>حدث خطأ ما </value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>مرحبا</value>
   </data>
   <data name="HelloWorld" xml:space="preserve">
     <value>مرحبا بالعالم</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>تسجيل الخروج</value>
+  </data>
   <data name="MainBranch" xml:space="preserve">
     <value>فرع البنك</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>تسجيل</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>حفظ</value>
