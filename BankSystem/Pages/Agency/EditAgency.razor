@@ -1,0 +1,67 @@
+﻿
+@attribute [Authorize]
+@page "/Agency/EditAgency/{AgencyId}"
+@using BankSystem.Data
+@inject BankSystem.IService.IAgencyService _agencyService
+@inject NotificationService notificationService
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<App> Localizer
+<div class="titleicon">
+    <span class="oi oi-home" aria-hidden="true"></span><h1>@Localizer["EditAgency"]</h1>
+
+</div>
+<hr />
+<RadzenCard>
+    <AuthorizeView Context="authContext">
+        <Authorized>
+            <EditForm Model="@updateAgency" OnValidSubmit="UpdateAgency" Context="formContext">
+                <DataAnnotationsValidator />
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="AgencyName" class="control-label">@Localizer["AgencyName"]</label>
+                        <InputText for="AgencyName" class="form-control" @bind-Value="@updateAgency.AgencyName"></InputText>
+
+                    </div>
+                  
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                        <button class="btn btn-primary" type="button" @onclick="() => cancel()">@Localizer["Cancel"]</button>
+                    </div>
+
+                </div>
+            </EditForm>
+        </Authorized>
+    </AuthorizeView>
+</RadzenCard>
+
+
+@code {
+
+    [Parameter]
+    public string AgencyId { get; set; }
+    Agency updateAgency = new Agency();
+    List<Agency> allAgenciesList = new List<Agency>();
+    protected override async Task OnInitializedAsync()
+    {
+        updateAgency = _agencyService.GetAgencyById(Convert.ToInt32(AgencyId));
+    }
+    protected void UpdateAgency()
+    {
+        _agencyService.UpdateAgency(updateAgency);
+        NavigationManager.NavigateTo("Agency/Agencies/", true);
+    }
+
+    void cancel()
+    {
+
+        NavigationManager.NavigateTo("Agency/Agencies/", true);
+    }
+
+    void Change(object value)
+    {
+        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+        // StateHasChanged();
+    }
+
+}

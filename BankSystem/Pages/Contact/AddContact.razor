@@ -1,0 +1,145 @@
+﻿@attribute [Authorize]
+@page "/Contact/AddContact/"
+@using BankSystem.Data
+@using BankSystem.CustomModel
+@inject IStringLocalizer<App> Localizer
+@inject IJSRuntime JSRuntime
+@inject BankSystem.IService.IContactService ContactService
+@inject BankSystem.IService.IBankService BankService
+@inject BankSystem.IService.IAgencyService AgencyService
+@inject NavigationManager NavigationManager
+<div class="titleicon">
+    <span class="oi oi-phone" aria-hidden="true"></span>
+    <h1>@Localizer["CreateContact"]</h1>
+</div>
+<hr />
+<RadzenCard>
+    <AuthorizeView Context="authContext">
+        <Authorized>
+            <EditForm Model="@NewContact" OnValidSubmit="CreateContact" Context="formContext">
+                <DataAnnotationsValidator />
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="ContactName" class="control-label">@Localizer["ContactName"]</label>
+                        <InputText for="ContactName" class="form-control" @bind-Value="@NewContact.ContactName"></InputText>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Mobile" class="control-label">@Localizer["Mobile"]</label>
+                        <InputText for="Mobile" class="form-control" @bind-Value="@NewContact.Mobile"></InputText>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ContactType" class="control-label">@Localizer["ContactType"]</label>
+                        <RadzenDropDown AllowClear="true"
+                                        TValue="int"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        FilterOperator="StringFilterOperator.Contains"
+                                        AllowFiltering="true"
+                                        Data="@ContactTypes"
+                                        TextProperty="Text"
+                                        ValueProperty="Value"
+                                        Style="margin-bottom: 20px"
+                                        Change="@(args => ChangeType(args))"
+                                        @bind-Value="@NewContact.ContactType"
+                                        class="form-control" />
+                    </div>
+                    @if (SelectedContactType == (int)Data.Enum.Contacts.BankRepresentative)
+                    {
+                    <div class="form-group">
+                        <label asp-for="BankId" class="control-label">@Localizer["Banks"] </label>
+                        <RadzenDropDown AllowClear="true"
+                                        TValue="int"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        FilterOperator="StringFilterOperator.Contains"
+                                        AllowFiltering="true"
+                                        Data="@AllBanks"
+                                        TextProperty="BankName"
+                                        ValueProperty="Id"
+                                        Style="margin-bottom: 20px"
+                                        Change="@(args => Change(args))"
+                                        @bind-Value="@NewContact.BankId"
+                                        class="form-control" />
+                    </div>
+                    }
+                    @if (SelectedContactType == (int)Data.Enum.Contacts.AgencyRepresentative)
+                    {
+                    <div class="form-group">
+                        <label asp-for="AgencyId" class="control-label">@Localizer["Agencies"]</label>
+                        <RadzenDropDown AllowClear="true"
+                                        TValue="int"
+                                     
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        FilterOperator="StringFilterOperator.Contains"
+                                        AllowFiltering="true"
+                                        Data="@AllAgencies"
+                                        TextProperty="AgencyName"
+                                        ValueProperty="Id"
+                                        Style="margin-bottom: 20px"
+                                        Change="@(args => Change(args))"
+                                        @bind-Value="@NewContact.AgencyId"
+                                        class="form-control" />
+                    </div>
+                    }
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">@Localizer["Save"]</button>
+                        <button class="btn" type="button" @onclick="() => cancel()">@Localizer["Cancel"]</button>
+                    </div>
+
+                </div>
+            </EditForm>
+        </Authorized>
+    </AuthorizeView>
+</RadzenCard>
+
+
+@code {
+    Contact NewContact = new Contact();
+    List<Bank> AllBanks = new List<Bank>();
+    List<Agency> AllAgencies = new List<Agency>();
+    int SelectedContactType;
+  
+
+    protected int currentStatus = -1;
+
+
+    List<CustomEnumModel> ContactTypes = new List<CustomEnumModel>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllBanks = await Task.Run(() => BankService.GetBanks());
+        AllAgencies = await Task.Run(() => AgencyService.GetAgencies());
+
+        foreach (Data.Enum.Contacts item in Enum.GetValues(typeof(Data.Enum.Contacts)))
+        {
+            ContactTypes.Add(new CustomEnumModel { Text = item.ToString(), Value = (int)item});
+        }
+
+    }
+    protected void CreateContact()
+    {
+        ContactService.AddContact(NewContact);
+        NavigationManager.NavigateTo("Contact/Contacts/", true);
+    }
+    void cancel()
+    {
+        NavigationManager.NavigateTo("Contact/Contacts/", true);
+    }
+
+
+    void ChangeType(object value)
+    {
+        SelectedContactType = (int)value;
+
+    }
+
+    void Change(object value)
+    {
+        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+
+
+    }
+}

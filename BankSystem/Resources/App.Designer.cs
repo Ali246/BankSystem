@@ -70,6 +70,24 @@ namespace BankSystem.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الوكالات.
+        /// </summary>
+        public static string Agencies {
+            get {
+                return ResourceManager.GetString("Agencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اسم الوكالة.
+        /// </summary>
+        public static string AgencyName {
+            get {
+                return ResourceManager.GetString("AgencyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to عربي.
         /// </summary>
         public static string Arabic {
@@ -129,6 +147,15 @@ namespace BankSystem.Resources {
         public static string ConfirmationMessage {
             get {
                 return ResourceManager.GetString("ConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to انشاء وكالة.
+        /// </summary>
+        public static string CreateAgency {
+            get {
+                return ResourceManager.GetString("CreateAgency", resourceCulture);
             }
         }
         
@@ -201,6 +228,15 @@ namespace BankSystem.Resources {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تعديل وكالة.
+        /// </summary>
+        public static string EditAgency {
+            get {
+                return ResourceManager.GetString("EditAgency", resourceCulture);
             }
         }
         

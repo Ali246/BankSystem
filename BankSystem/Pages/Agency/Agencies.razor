@@ -1,0 +1,102 @@
+﻿@page "/Agency/Agencies"
+@inject IStringLocalizer<App> Localizer
+@using BankSystem.Data
+@inject IJSRuntime JSRuntime
+@inject BankSystem.IService.IAgencyService  _agencyService
+@inject NavigationManager NavigationManager
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject NotificationService notificationService
+<div class="titleicon">
+    <span class="oi oi-home" aria-hidden="true"></span>
+    <h1>@Localizer["Agencies"]</h1>
+</div>
+<AuthorizeView Context="AuthorizeContext">
+    <Authorized>
+
+        <br />
+        <RadzenButton Icon="add_circle_outline" style="margin-bottom:10px; margin-left:1350px;" Text="@Localizer["CreateAgency"]" Click="@InsrtRow" />
+        <RadzenCard>
+            @if (AgenciesList == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <RadzenGrid @ref="AgenciesGrid" AllowFiltering="true"
+                            AllowPaging="true" PageSize="10"
+                            AllowSorting="true" EditMode="DataGridEditMode.Multiple"
+                            Data="@AgenciesList" TItem="Agency">
+                    <Columns>
+
+                        <RadzenGridColumn TItem="Agency" Property="AgencyName" Title="@Localizer["AgencyName"]" />
+                
+                        <RadzenGridColumn TItem="Agency" Property="al:web:url" Title="@Localizer["Edit"]" Filterable="false">
+                            <Template Context="Agency">
+                                <RadzenButton Width="150px" Text="@Localizer["Edit"]" Icon="edit" Click="@(args => Edit(Agency))" id="bnt-style-general" />
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn Width="150px" TItem="Agency" Property="al:web:url" Title="@Localizer["Delete"]" Filterable="false">
+                            <Template Context="Agency">
+                                <RadzenButton Text="@Localizer["Delete"]" Icon="delete" Click="@(args => Delete(Agency))" id="bnt-style-general" />
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+
+            }
+        </RadzenCard>
+
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    RadzenGrid<Agency> AgenciesGrid;
+    List<Agency> AgenciesList = new List<Agency>();
+    Agency newAgencies = new Agency();
+    protected override async Task OnInitializedAsync()
+    {
+
+        AgenciesList = await Task.Run(() => _agencyService.GetAgencies());
+    }
+
+    protected void Edit(Agency UpdateAgency)
+    {
+
+        NavigationManager.NavigateTo("Agency/EditAgency/" + UpdateAgency.Id);
+    }
+
+    async Task Delete(Agency DeleteAgency)
+    {
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "هل تريد مسح الوكالة");
+        if (confirmed)
+        {
+
+            DeleteAgency.DeleteDate = DateTime.Now;
+            DeleteAgency.IsDeleted = true;
+            var success = _agencyService.DeleteAgency(DeleteAgency);
+            if (await success)
+            {
+                AgenciesList.Remove(DeleteAgency);
+                AgenciesGrid.Reload();
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success", Duration = 4000 });
+            }
+            else
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Duration = 4000 });
+            }
+        }
+    }
+    protected void InsrtRow()
+    {
+        NavigationManager.NavigateTo("Agency/AddAgency/");
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
+
+    }
+
+
+}

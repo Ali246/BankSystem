@@ -120,6 +120,12 @@
   <data name="AccountNumber" xml:space="preserve">
     <value>رقم حساب</value>
   </data>
+  <data name="Agencies" xml:space="preserve">
+    <value>الوكالات</value>
+  </data>
+  <data name="AgencyName" xml:space="preserve">
+    <value>اسم الوكالة</value>
+  </data>
   <data name="Arabic" xml:space="preserve">
     <value>عربي</value>
   </data>
@@ -140,6 +146,9 @@
   </data>
   <data name="ConfirmationMessage" xml:space="preserve">
     <value>رسالة تأكيد</value>
+  </data>
+  <data name="CreateAgency" xml:space="preserve">
+    <value>انشاء وكالة</value>
   </data>
   <data name="CreateBank" xml:space="preserve">
     <value>انشاء بنك</value>
@@ -164,6 +173,9 @@
   </data>
   <data name="Edit" xml:space="preserve">
     <value>تعديل</value>
+  </data>
+  <data name="EditAgency" xml:space="preserve">
+    <value>تعديل وكالة</value>
   </data>
   <data name="EditBank" xml:space="preserve">
     <value>تعديل البنك</value>

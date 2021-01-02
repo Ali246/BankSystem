@@ -48,10 +48,12 @@ namespace BankSystem
             services.AddScoped<NotificationService>();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
+            services.AddTransient<ApplicationDbContext>();
             services.AddTransient<IBankService, BankService>();
             services.AddTransient<IBankAccountService, BankAccountService>();
             services.AddTransient<ICurrencyService, CurrencyService>();
-
+            services.AddTransient<IAgencyService, AgencyService>();
+            services.AddTransient<IContactService, ContactService>();
         }
         private RequestLocalizationOptions GetLocalizationOptions()
         {

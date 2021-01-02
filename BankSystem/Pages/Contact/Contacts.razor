@@ -1,0 +1,105 @@
+﻿
+@page "/Contact/Contacts"
+@inject IStringLocalizer<App> Localizer
+@using BankSystem.Data
+@inject IJSRuntime JSRuntime
+@inject BankSystem.IService.IContactService  _contactService
+@inject NavigationManager NavigationManager
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject NotificationService notificationService
+<div class="titleicon">
+    <span class="oi oi-phone" aria-hidden="true"></span>
+    <h1>@Localizer["Contacts"]</h1>
+</div>
+<AuthorizeView Context="AuthorizeContext">
+    <Authorized>
+
+        <br />
+        <RadzenButton Icon="add_circle_outline" style="margin-bottom:10px; margin-left:1350px;" Text="@Localizer["CreateContact"]" Click="@InsrtRow" />
+        <RadzenCard>
+            @if (ContactsList == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <RadzenGrid @ref="ContactsGrid" AllowFiltering="true"
+                            AllowPaging="true" PageSize="10"
+                            AllowSorting="true" EditMode="DataGridEditMode.Multiple"
+                            Data="@ContactsList" TItem="Contact">
+                    <Columns>
+
+                        <RadzenGridColumn TItem="Contact" Property="ContactName" Title="@Localizer["ContactName"]" />
+                        <RadzenGridColumn TItem="Contact" Property="Mobile" Title="@Localizer["Mobile"]" />
+                        <RadzenGridColumn TItem="Contact" Property="ContactType" Title="@Localizer["ContactType"]" />
+
+                        <RadzenGridColumn TItem="Contact" Property="al:web:url" Title="@Localizer["Edit"]" Filterable="false">
+                            <Template Context="Contact">
+                                <RadzenButton Width="150px" Text="@Localizer["Edit"]" Icon="edit" Click="@(args => Edit(Contact))" id="bnt-style-general" />
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn Width="150px" TItem="Contact" Property="al:web:url" Title="@Localizer["Delete"]" Filterable="false">
+                            <Template Context="Contact">
+                                <RadzenButton Text="@Localizer["Delete"]" Icon="delete" Click="@(args => Delete(Contact))" id="bnt-style-general" />
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+
+            }
+        </RadzenCard>
+
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    RadzenGrid<Contact> ContactsGrid;
+    List<Contact> ContactsList = new List<Contact>();
+    Contact newContacts = new Contact();
+    protected override async Task OnInitializedAsync()
+    {
+
+        ContactsList = await Task.Run(() => _contactService.GetContacts());
+    }
+
+    protected void Edit(Contact UpdateContact)
+    {
+
+        NavigationManager.NavigateTo("Contact/EditContact/" + UpdateContact.Id);
+    }
+
+    async Task Delete(Contact DeleteContact)
+    {
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "هل تريد مسح جهة الاتصال");
+        if (confirmed)
+        {
+
+            DeleteContact.DeleteDate = DateTime.Now;
+            DeleteContact.IsDeleted = true;
+            var success = _contactService.DeleteContact(DeleteContact);
+            if (await success)
+            {
+                ContactsList.Remove(DeleteContact);
+                ContactsGrid.Reload();
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success", Duration = 4000 });
+            }
+            else
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Duration = 4000 });
+            }
+        }
+    }
+    protected void InsrtRow()
+    {
+        NavigationManager.NavigateTo("Contact/AddContact/");
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
+
+    }
+
+
+}
