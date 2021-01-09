@@ -8,11 +8,13 @@
 @inject BankSystem.IService.IBankService BankService
 @inject BankSystem.IService.IAgencyService AgencyService
 @inject NavigationManager NavigationManager
+@inject NotificationService notificationService
 <div class="titleicon">
     <span class="oi oi-phone" aria-hidden="true"></span>
     <h1>@Localizer["CreateContact"]</h1>
 </div>
 <hr />
+<RadzenNotification />
 <RadzenCard>
     <AuthorizeView Context="authContext">
         <Authorized>
@@ -38,50 +40,50 @@
                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                         FilterOperator="StringFilterOperator.Contains"
                                         AllowFiltering="true"
-                                        Data="@ContactTypes"
-                                        TextProperty="Text"
+                                        Data="@localizedcontactTypeEnums"
+                                        TextProperty="Name"
                                         ValueProperty="Value"
                                         Style="margin-bottom: 20px"
                                         Change="@(args => ChangeType(args))"
                                         @bind-Value="@NewContact.ContactType"
                                         class="form-control" />
                     </div>
-                    @if (SelectedContactType == (int)Data.Enum.Contacts.BankRepresentative)
+                    @if (SelectedContactType == 2)
                     {
-                    <div class="form-group">
-                        <label asp-for="BankId" class="control-label">@Localizer["Banks"] </label>
-                        <RadzenDropDown AllowClear="true"
-                                        TValue="int"
-                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                        FilterOperator="StringFilterOperator.Contains"
-                                        AllowFiltering="true"
-                                        Data="@AllBanks"
-                                        TextProperty="BankName"
-                                        ValueProperty="Id"
-                                        Style="margin-bottom: 20px"
-                                        Change="@(args => Change(args))"
-                                        @bind-Value="@NewContact.BankId"
-                                        class="form-control" />
-                    </div>
+                <div class="form-group">
+                    <label asp-for="BankId" class="control-label">@Localizer["Banks"] </label>
+                    <RadzenDropDown AllowClear="true"
+                                    TValue="int"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    FilterOperator="StringFilterOperator.Contains"
+                                    AllowFiltering="true"
+                                    Data="@AllBanks"
+                                    TextProperty="BankName"
+                                    ValueProperty="Id"
+                                    Style="margin-bottom: 20px"
+                                    Change="@(args => Change(args))"
+                                    @bind-Value="@NewContact.BankId"
+                                    class="form-control" />
+                   ]
+                </div>
                     }
-                    @if (SelectedContactType == (int)Data.Enum.Contacts.AgencyRepresentative)
+                    @if (SelectedContactType == 3)
                     {
-                    <div class="form-group">
-                        <label asp-for="AgencyId" class="control-label">@Localizer["Agencies"]</label>
-                        <RadzenDropDown AllowClear="true"
-                                        TValue="int"
-                                     
-                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                        FilterOperator="StringFilterOperator.Contains"
-                                        AllowFiltering="true"
-                                        Data="@AllAgencies"
-                                        TextProperty="AgencyName"
-                                        ValueProperty="Id"
-                                        Style="margin-bottom: 20px"
-                                        Change="@(args => Change(args))"
-                                        @bind-Value="@NewContact.AgencyId"
-                                        class="form-control" />
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="AgencyId" class="control-label">@Localizer["Agencies"]</label>
+                            <RadzenDropDown AllowClear="true"
+                                            TValue="int"
+                                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                            FilterOperator="StringFilterOperator.Contains"
+                                            AllowFiltering="true"
+                                            Data="@AllAgencies"
+                                            TextProperty="AgencyName"
+                                            ValueProperty="Id"
+                                            Style="margin-bottom: 20px"
+                                            Change="@(args => Change(args))"
+                                            @bind-Value="@NewContact.AgencyId"
+                                            class="form-control" />
+                        </div>
                     }
                     <div class="form-group">
                         <button type="submit" class="btn btn-default">@Localizer["Save"]</button>
@@ -99,47 +101,87 @@
     Contact NewContact = new Contact();
     List<Bank> AllBanks = new List<Bank>();
     List<Agency> AllAgencies = new List<Agency>();
+    List<ContactTypeEnum> contactTypeEnums = new List<ContactTypeEnum>();
+    List<ContactTypeEnum> localizedcontactTypeEnums = new List<ContactTypeEnum>();
     int SelectedContactType;
-  
-
-    protected int currentStatus = -1;
-
-
+    // string ValidationClass = "";
     List<CustomEnumModel> ContactTypes = new List<CustomEnumModel>();
-
-
     protected override async Task OnInitializedAsync()
     {
         AllBanks = await Task.Run(() => BankService.GetBanks());
         AllAgencies = await Task.Run(() => AgencyService.GetAgencies());
+        contactTypeEnums = await Task.Run(() => ContactService.GetContactsEnum());
 
-        foreach (Data.Enum.Contacts item in Enum.GetValues(typeof(Data.Enum.Contacts)))
+        foreach (var item in contactTypeEnums)
         {
-            ContactTypes.Add(new CustomEnumModel { Text = item.ToString(), Value = (int)item});
+            localizedcontactTypeEnums.Add(new ContactTypeEnum { Name = Localizer[item.Name], Id = item.Id, Value = item.Value });
         }
 
     }
-    protected void CreateContact()
+    protected async Task CreateContact()
     {
-        ContactService.AddContact(NewContact);
-        NavigationManager.NavigateTo("Contact/Contacts/", true);
+
+
+        bool isValid = CheckValidation(NewContact);
+
+        if (isValid)
+        {
+
+
+            var Returned = ContactService.AddContact(NewContact);
+            if (await Returned)
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = Localizer["Success"], Duration = 4000 });
+                NavigationManager.NavigateTo("Contact/Contacts/", true);
+            }
+            else
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = Localizer["Error"], Duration = 4000 });
+            }
+        }
+
     }
+
+
+    bool CheckValidation(Contact NewContact)
+    {
+
+
+
+        if (NewContact.ContactType == 2 && NewContact.BankId == 0)
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = Localizer["ChooseBank"], Duration = 4000 });
+            return false;
+        }
+        else if (NewContact.ContactType == 3 && NewContact.AgencyId == 0)
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = Localizer["ChooseAgency"], Duration = 4000 });
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     void cancel()
     {
         NavigationManager.NavigateTo("Contact/Contacts/", true);
     }
-
-
     void ChangeType(object value)
     {
         SelectedContactType = (int)value;
 
     }
-
     void Change(object value)
     {
         var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
 
+
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
 
     }
 }

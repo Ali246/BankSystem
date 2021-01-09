@@ -1,17 +1,21 @@
-﻿
-@page "/Contact/Contacts"
+﻿@page "/Contact/Contacts"
 @inject IStringLocalizer<App> Localizer
 @using BankSystem.Data
+@using BankSystem.CustomModel
 @inject IJSRuntime JSRuntime
 @inject BankSystem.IService.IContactService  _contactService
 @inject NavigationManager NavigationManager
 @using System.Text.Json
 @using System.Text.Json.Serialization
 @inject NotificationService notificationService
+@inject DialogService dialogService
 <div class="titleicon">
     <span class="oi oi-phone" aria-hidden="true"></span>
     <h1>@Localizer["Contacts"]</h1>
 </div>
+
+<RadzenDialog />
+
 <AuthorizeView Context="AuthorizeContext">
     <Authorized>
 
@@ -26,70 +30,69 @@
             {
                 <RadzenGrid @ref="ContactsGrid" AllowFiltering="true"
                             AllowPaging="true" PageSize="10"
-                            AllowSorting="true" EditMode="DataGridEditMode.Multiple"
-                            Data="@ContactsList" TItem="Contact">
+                            AllowSorting="true" EditMode="DataGridEditMode.Single"
+                            Data="@ContactsList" TItem="CustomContactModel">
                     <Columns>
 
-                        <RadzenGridColumn TItem="Contact" Property="ContactName" Title="@Localizer["ContactName"]" />
-                        <RadzenGridColumn TItem="Contact" Property="Mobile" Title="@Localizer["Mobile"]" />
-                        <RadzenGridColumn TItem="Contact" Property="ContactType" Title="@Localizer["ContactType"]" />
+                        <RadzenGridColumn TItem="CustomContactModel" Property="ContactName" Title="@Localizer["ContactName"]" />
+                        <RadzenGridColumn TItem="CustomContactModel" Property="Mobile" Title="@Localizer["Mobile"]" />
+                        <RadzenGridColumn TItem="CustomContactModel" Property="ContactTypeName"  Title="@Localizer["ContactTypeName"]" />
+                        <RadzenGridColumn TItem="CustomContactModel" Property="BankName" Title="@Localizer["BankName"]" />
+                        <RadzenGridColumn TItem="CustomContactModel" Property="AgencyName" Title="@Localizer["AgencyName"]" />
 
-                        <RadzenGridColumn TItem="Contact" Property="al:web:url" Title="@Localizer["Edit"]" Filterable="false">
-                            <Template Context="Contact">
-                                <RadzenButton Width="150px" Text="@Localizer["Edit"]" Icon="edit" Click="@(args => Edit(Contact))" id="bnt-style-general" />
+                        <RadzenGridColumn TItem="CustomContactModel" Property="al:web:url" Title="@Localizer["Edit"]" Filterable="false">
+                            <Template Context="CustomContactModel">
+                                <RadzenButton Width="150px" Text="@Localizer["Edit"]" Icon="edit" Click="@(args => Edit(CustomContactModel))" id="bnt-style-general" />
                             </Template>
                         </RadzenGridColumn>
-                        <RadzenGridColumn Width="150px" TItem="Contact" Property="al:web:url" Title="@Localizer["Delete"]" Filterable="false">
-                            <Template Context="Contact">
-                                <RadzenButton Text="@Localizer["Delete"]" Icon="delete" Click="@(args => Delete(Contact))" id="bnt-style-general" />
+                        <RadzenGridColumn Width="150px" TItem="CustomContactModel" Property="al:web:url" Title="@Localizer["Delete"]" Filterable="false">
+                            <Template Context="CustomContactModel">
+                                <RadzenButton Text="@Localizer["Delete"]" Icon="delete" Click="@(args => ShowSimpleDialog(CustomContactModel))" id="bnt-style-general" />
                             </Template>
                         </RadzenGridColumn>
                     </Columns>
                 </RadzenGrid>
-
             }
         </RadzenCard>
 
     </Authorized>
 </AuthorizeView>
-
-
+<RadzenNotification />
 @code {
-    RadzenGrid<Contact> ContactsGrid;
-    List<Contact> ContactsList = new List<Contact>();
-    Contact newContacts = new Contact();
+    RadzenGrid<CustomContactModel> ContactsGrid;
+    List<CustomContactModel> ContactsList = new List<CustomContactModel>();
+    CustomContactModel newContacts = new CustomContactModel();
     protected override async Task OnInitializedAsync()
     {
 
         ContactsList = await Task.Run(() => _contactService.GetContacts());
+
+        ContactsList.Select(c => { c.ContactTypeName = Localizer[c.ContactTypeName]; return c; }).ToList();
+
+
     }
-
-    protected void Edit(Contact UpdateContact)
+    protected void Edit(CustomContactModel UpdateContact)
     {
-
         NavigationManager.NavigateTo("Contact/EditContact/" + UpdateContact.Id);
     }
-
-    async Task Delete(Contact DeleteContact)
+    async Task Delete(CustomContactModel DeleteContact)
     {
-        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "هل تريد مسح جهة الاتصال");
-        if (confirmed)
-        {
 
-            DeleteContact.DeleteDate = DateTime.Now;
-            DeleteContact.IsDeleted = true;
-            var success = _contactService.DeleteContact(DeleteContact);
-            if (await success)
-            {
-                ContactsList.Remove(DeleteContact);
-                ContactsGrid.Reload();
-                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Success", Duration = 4000 });
-            }
-            else
-            {
-                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Duration = 4000 });
-            }
+        DeleteContact.DeleteDate = DateTime.Now;
+        DeleteContact.IsDeleted = true;
+        var success = _contactService.DeleteContact(DeleteContact);
+        if (await success)
+        {
+            ContactsList.Remove(DeleteContact);
+            await ContactsGrid.Reload();
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = Localizer["Success"], Duration = 4000 });
+            dialogService.Close(true);
         }
+        else
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = Localizer["Error"], Duration = 4000 });
+        }
+
     }
     protected void InsrtRow()
     {
@@ -98,8 +101,17 @@
     void ShowNotification(NotificationMessage message)
     {
         notificationService.Notify(message);
-
     }
 
-
+    async Task ShowSimpleDialog(CustomContactModel DeleteContact) => await dialogService.OpenAsync(Localizer["Delete"], ds =>
+    @<RadzenCard Style="padding: 20px;">
+        <p Style="margin-bottom: 10px;">@Localizer["Areyousure"]</p>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenButton Text="@Localizer["Yes"]" Click="()=> Delete(DeleteContact)" ButtonStyle="ButtonStyle.Danger" Style="margin-bottom: 10px; width: 150px" />
+                <RadzenButton Text="@Localizer["Cancel"]" Click="()=> ds.Close(false)" ButtonStyle="ButtonStyle.Secondary" Style="margin-bottom: 10px; width: 150px" />
+            </div>
+        </div>
+    </RadzenCard>);
 }
+

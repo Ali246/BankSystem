@@ -46,6 +46,7 @@ namespace BankSystem
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<NotificationService>();
+            services.AddScoped<DialogService>();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<ApplicationDbContext>();

@@ -126,11 +126,20 @@
   <data name="AgencyName" xml:space="preserve">
     <value>Agency Name</value>
   </data>
+  <data name="AgencyRepresentative" xml:space="preserve">
+    <value>Agency Representative</value>
+  </data>
   <data name="Arabic" xml:space="preserve">
     <value>Arabic</value>
   </data>
+  <data name="Areyousure" xml:space="preserve">
+    <value>Are you sure you want to delete ?</value>
+  </data>
   <data name="BankName" xml:space="preserve">
     <value>Bank Name</value>
+  </data>
+  <data name="BankRepresentative" xml:space="preserve">
+    <value>Bank Representative</value>
   </data>
   <data name="Banks" xml:space="preserve">
     <value>Banks</value>
@@ -141,11 +150,32 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="ChooseAgency" xml:space="preserve">
+    <value>Choose Agency Please</value>
+  </data>
+  <data name="ChooseBank" xml:space="preserve">
+    <value>Choose Bank Please</value>
+  </data>
+  <data name="Client" xml:space="preserve">
+    <value>Client</value>
+  </data>
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
   <data name="ConfirmationMessage" xml:space="preserve">
     <value>Confirmation Message</value>
+  </data>
+  <data name="ContactName" xml:space="preserve">
+    <value> Contact Name</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="ContactType" xml:space="preserve">
+    <value>Contact Type</value>
+  </data>
+  <data name="ContactTypeName" xml:space="preserve">
+    <value>Contact Type</value>
   </data>
   <data name="CreateAgency" xml:space="preserve">
     <value>Create Agency</value>
@@ -155,6 +185,9 @@
   </data>
   <data name="CreateBankAccount" xml:space="preserve">
     <value>Create Banks Accounts</value>
+  </data>
+  <data name="CreateContact" xml:space="preserve">
+    <value>Create Contact</value>
   </data>
   <data name="CreateCurrency" xml:space="preserve">
     <value>Create Currency</value>
@@ -183,6 +216,9 @@
   <data name="EditBanksAccounts" xml:space="preserve">
     <value>Edit Banks Accounts</value>
   </data>
+  <data name="EditContact" xml:space="preserve">
+    <value>Edit Contact</value>
+  </data>
   <data name="EditCurrency" xml:space="preserve">
     <value>Edit Currency</value>
   </data>
@@ -193,7 +229,7 @@
     <value>English</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Error</value>
+    <value>Operation Error</value>
   </data>
   <data name="Hello" xml:space="preserve">
     <value>Hello</value>
@@ -213,6 +249,12 @@
   <data name="MainBranch" xml:space="preserve">
     <value>Main Branch</value>
   </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>
@@ -221,5 +263,8 @@
   </data>
   <data name="Success" xml:space="preserve">
     <value>Operation Success</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

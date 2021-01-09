@@ -17,5 +17,6 @@ namespace BankSystem.Data
         public DbSet<Currency> currency { get; set; }
         public DbSet<Agency> agency { get; set; }
         public DbSet<Contact> contact { get; set; }
+        public DbSet<ContactTypeEnum> ContactTypeEnum { get; set; }
     } 
 }

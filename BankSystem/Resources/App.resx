@@ -126,11 +126,20 @@
   <data name="AgencyName" xml:space="preserve">
     <value>اسم الوكالة</value>
   </data>
+  <data name="AgencyRepresentative" xml:space="preserve">
+    <value>ممثل الوكالة</value>
+  </data>
   <data name="Arabic" xml:space="preserve">
     <value>عربي</value>
   </data>
+  <data name="Areyousure" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد الحذف</value>
+  </data>
   <data name="BankName" xml:space="preserve">
     <value>اسم البنك</value>
+  </data>
+  <data name="BankRepresentative" xml:space="preserve">
+    <value>ممثل البنك</value>
   </data>
   <data name="Banks" xml:space="preserve">
     <value>البنوك</value>
@@ -141,11 +150,32 @@
   <data name="Cancel" xml:space="preserve">
     <value>الغاء</value>
   </data>
+  <data name="ChooseAgency" xml:space="preserve">
+    <value>برجاء اختيار وكالة</value>
+  </data>
+  <data name="ChooseBank" xml:space="preserve">
+    <value>برجاء اختيار بنك</value>
+  </data>
+  <data name="Client" xml:space="preserve">
+    <value>عميل</value>
+  </data>
   <data name="Confirm" xml:space="preserve">
     <value>تأكيد</value>
   </data>
   <data name="ConfirmationMessage" xml:space="preserve">
     <value>رسالة تأكيد</value>
+  </data>
+  <data name="ContactName" xml:space="preserve">
+    <value>اسم جهة الاتصال</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>جهات الاتصال</value>
+  </data>
+  <data name="ContactType" xml:space="preserve">
+    <value>نوع جهة الاتصال</value>
+  </data>
+  <data name="ContactTypeName" xml:space="preserve">
+    <value>نوع جهة الاتصال</value>
   </data>
   <data name="CreateAgency" xml:space="preserve">
     <value>انشاء وكالة</value>
@@ -155,6 +185,9 @@
   </data>
   <data name="CreateBankAccount" xml:space="preserve">
     <value>إنشاء حسابات بنكية</value>
+  </data>
+  <data name="CreateContact" xml:space="preserve">
+    <value>انشاء جهة اتصال</value>
   </data>
   <data name="CreateCurrency" xml:space="preserve">
     <value>انشاء عملة</value>
@@ -182,6 +215,9 @@
   </data>
   <data name="EditBanksAccounts" xml:space="preserve">
     <value>تعديل  حسابات البنوك</value>
+  </data>
+  <data name="EditContact" xml:space="preserve">
+    <value>تعديل جهة الاتصال</value>
   </data>
   <data name="EditCurrency" xml:space="preserve">
     <value>تعديل عملة</value>
@@ -213,6 +249,12 @@
   <data name="MainBranch" xml:space="preserve">
     <value>فرع البنك</value>
   </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>رقم الهاتف</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>لا</value>
+  </data>
   <data name="Register" xml:space="preserve">
     <value>تسجيل</value>
   </data>
@@ -221,5 +263,8 @@
   </data>
   <data name="Success" xml:space="preserve">
     <value>تمت العملية بنجاح</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>نعم</value>
   </data>
 </root>
